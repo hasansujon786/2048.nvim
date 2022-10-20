@@ -3,24 +3,46 @@ local board = require('2048.board')
 local ui = require('2048.ui')
 local state = require('2048.state')
 local tile = require('2048.tile')
+local M = {}
 
-local lines = {}
+--  1  2  3  4
+--  5  6  7  8
+--  9 10 11 12
+-- 13 14 15 16
 
-_G.render = function()
+local function startGame()
   -- R('2048')
   local active_board = board.setupBoard()
   board.drawEmptyBoard()
 
-  foo()
-  -- P(pi.col, pi.row)
-  -- local pi = state.tiles[1]
-  -- renderTile(pi.col, pi.row, state.pieces.two)
+  tile.insert(1, state.pieces.two)
+  board.updateTiles()
 end
 
-_G.foo = function()
-  for i = 1, 16, 1 do
-    local pi = state.tiles[i]
-    -- P(pi.col, pi.row)
-    tile.render(pi.col, pi.row, state.pieces.two)
-  end
+_G.remove = function(nr)
+  tile.remove(nr)
+  board.updateTiles()
 end
+
+_G.move = function(from, to)
+  tile.moveFrom(from, to)
+  board.updateTiles()
+end
+
+_G.add = function(nr, p)
+  local pi = nil
+  if p == 4 then
+    pi = state.pieces.four
+  elseif p == 2 then
+    pi = state.pieces.two
+  end
+
+  tile.insert(nr, pi)
+  board.updateTiles()
+end
+
+keymap('n', '<leader>e', function()
+  startGame()
+end)
+
+return M

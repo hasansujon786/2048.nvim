@@ -15,18 +15,30 @@ function M.generateTileText(text)
   return formatter:format(pad_char:rep(pad), text, pad_char:rep(pad + balancer))
 end
 
-function M.render(start_col, start_row, pi)
-  for idx = 0, 4, 1 do
-    local linenr_start = idx + start_col
-    local text = nil
-    if idx == 2 then
-      text = NuiText(M.generateTileText(pi.text), pi.hl)
-      -- text:render(bufnr, ns_id, linenr_start, start_row)
-    else
-      text = NuiText(ui.pieceText, pi.hl)
-    end
-    text:render_char(state.bufnr, state.ns_id, linenr_start, start_row)
+function M.insert(to_nr, piece)
+  local tiles = state.tiles
+  tiles[to_nr].hasPiece = true
+  tiles[to_nr].piece = piece
+end
+
+function M.remove(from_nr)
+  local tiles = state.tiles
+  tiles[from_nr].hasPiece = false
+  tiles[from_nr].piece = nil
+end
+
+function M.moveFrom(from_nr, to_nr)
+  local tiles = state.tiles
+  if not tiles[from_nr].hasPiece then
+    P('no tile')
+    return
   end
+
+  tiles[to_nr].hasPiece = true
+  tiles[to_nr].piece = tiles[from_nr].piece
+
+  tiles[from_nr].hasPiece = false
+  tiles[from_nr].piece = nil
 end
 
 return M
