@@ -1,19 +1,21 @@
+local board = require('2048.board')
+local c = require('2048.constant')
 local M = {}
 
-function M.user_up()
-  P('pressed up')
+function M.onUp()
+  board.slideTiles(c.direction.up, c.tileDirectionalPath.verticle)
 end
 
-function M.user_down()
-  P('pressed down')
+function M.onDown()
+  board.slideTiles(c.direction.down, c.tileDirectionalPath.verticle)
 end
 
-function M.user_left()
-  P('pressed left')
+function M.onLeft()
+  board.slideTiles(c.direction.left, c.tileDirectionalPath.horizontal)
 end
 
-function M.user_right()
-  P('pressed right')
+function M.onRight()
+  board.slideTiles(c.direction.right, c.tileDirectionalPath.horizontal)
 end
 
 return M

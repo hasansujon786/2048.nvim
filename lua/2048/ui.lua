@@ -1,8 +1,4 @@
 local ui = {
-  rowGap = '━━━━━━━━━━━━╋━━━━━━━━━━━━╋━━━━━━━━━━━━╋━━━━━━━━━━━━',
-  pieceText = '████████████',
-  pieceChar = '█',
-  pieceEmpty = '            ',
   hl = {
     border = 'NonText',
     two = '',
@@ -13,6 +9,10 @@ local ui = {
     sixtyFour = '',
   },
   chars = {
+    pieceEmpty = '    x       ',
+    pieceText = '████████████',
+    pieceChar = '█',
+    borderRow = '━━━━━━━━━━━━╋━━━━━━━━━━━━╋━━━━━━━━━━━━╋━━━━━━━━━━━━',
     -- vert = '|',
     vert = '┃',
     horiz = '━',

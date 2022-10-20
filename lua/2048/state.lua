@@ -82,20 +82,8 @@ local tiles = {
   },
 }
 
-local pieces = {
-  two = {
-    nr = 2,
-    hl = 'String',
-  },
-  four = {
-    nr = 4,
-    hl = '@constant',
-  },
-}
-
 return {
   tiles = tiles,
-  pieces = pieces,
   bufnr = 0,
   ns_id = -1,
 }
