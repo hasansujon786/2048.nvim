@@ -18,8 +18,8 @@ function M.startGame()
 
   -- tile.insert(5, c.pieces.two)
   -- tile.insert(2, c.pieces.two)
-  tile.insert(11, c.pieces.two)
-  -- tile.insert(16, c.pieces.two)
+  -- tile.insert(13, c.pieces.two)
+  tile.insert(1, c.pieces.two)
   board.renderAllTiles()
   print('============================================================')
 end

@@ -3,19 +3,19 @@ local c = require('2048.constant')
 local M = {}
 
 function M.onUp()
-  board.slideTiles(c.direction.up, c.tileDirectionalPath.verticle)
+  board.slideTiles(c.direction.up)
 end
 
 function M.onDown()
-  board.slideTiles(c.direction.down, c.tileDirectionalPath.verticle)
+  board.slideTiles(c.direction.down)
 end
 
 function M.onLeft()
-  board.slideTiles(c.direction.left, c.tileDirectionalPath.horizontal)
+  board.slideTiles(c.direction.left)
 end
 
 function M.onRight()
-  board.slideTiles(c.direction.right, c.tileDirectionalPath.horizontal)
+  board.slideTiles(c.direction.right)
 end
 
 return M

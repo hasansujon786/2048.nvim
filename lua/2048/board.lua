@@ -50,6 +50,10 @@ function M.setupBoard()
   popup:map('n', 'j', controller.onDown)
   popup:map('n', 'k', controller.onUp)
   popup:map('n', 'l', controller.onRight)
+
+  popup:on(event.BufLeave, function()
+    popup:unmount()
+  end)
   return popup
 end
 
@@ -108,35 +112,31 @@ function M.renderAllTiles()
   end
 end
 
-local function getCurPath(paths, nr, direction)
-  for _, curPath in ipairs(paths) do
-    if vim.tbl_contains(curPath, nr) then
-      -- set path as direction
-      local foundPath = curPath
-      if direction == c.direction.up or direction == c.direction.left then
-        foundPath = utils.reverseTable(curPath)
-      end
-      -- get valid tile paths
-      for index, p_nr in ipairs(foundPath) do
-        if nr == p_nr then
-          return utils.slice(foundPath, index + 1, 4)
-        end
-      end
+local function getCurPath(paths, nr)
+  for index, p_nr in ipairs(paths) do
+    if nr == p_nr then
+      return utils.slice(paths, index + 1, 4)
     end
   end
 end
 
--- local curPath = getCurPath(c.tileDirectionalPath.horizontal, 1, c.direction.left)
--- local curPath = getCurPath(c.tileDirectionalPath.horizontal, 8, c.direction.right)
--- P(curPath)
-
-function M.slideTiles(direction, paths)
+function M.slideTiles(direction)
+  local tiles = state.tiles
+  local paths = c.tileDirectionalPath[direction]
   local moves = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-  for curIndex, curTile in ipairs(state.tiles) do
-    if curTile.hasPiece then
-      local curPath = getCurPath(paths, curIndex, direction)
-      local nextIndex = tile.getNextAvailableTile(curPath, curIndex)
-      moves[curIndex] = nextIndex
+
+  for i = 1, #paths do
+    local curPath = paths[i]
+    for j = 1, #curPath do
+      local curTileIdx = curPath[j]
+      local curTile = tiles[curTileIdx]
+      if curTile.hasPiece then
+        -- P(curIndex, curTile)
+        -- P(curPath)
+        local availablePaths = getCurPath(curPath, curTileIdx)
+        local nextTileIdx = tile.getNextAvailableTile(availablePaths, curTileIdx)
+        moves[curTileIdx] = nextTileIdx
+      end
     end
   end
 
