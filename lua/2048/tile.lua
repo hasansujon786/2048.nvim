@@ -17,7 +17,7 @@ end
 function M.moveFrom(from_nr, to_nr)
   local tiles = state.tiles
   if not tiles[from_nr].hasPiece then
-    P('no tile')
+    P('no tile from_nr', from_nr)
     return
   end
 
@@ -37,7 +37,7 @@ function M.getNextAvailableTile(curPath, curIndex)
     if curIndex ~= nextIndex then
       if nextTile.hasPiece then
       else
-        P(curPath, curIndex, nextIndex)
+        -- P(curPath, curIndex, nextIndex)
         finalNextIndex = nextIndex
       end
     end

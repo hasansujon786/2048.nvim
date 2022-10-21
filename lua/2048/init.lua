@@ -16,16 +16,20 @@ function M.startGame()
   local active_board = board.setupBoard()
   board.drawEmptyBoard()
 
-  -- tile.insert(5, c.pieces.two)
-  -- tile.insert(2, c.pieces.two)
-  -- tile.insert(13, c.pieces.two)
+  -- tile.insert(c.tileDirectionalPath.up[1][1], c.pieces.two)
+  -- tile.insert(c.tileDirectionalPath.left[1][4], c.pieces.two)
+
+  -- tile.insert(9, c.pieces.two)
   tile.insert(1, c.pieces.two)
+  tile.insert(3, c.pieces.four)
+  tile.insert(16, c.pieces.four)
+  tile.insert(5, c.pieces.four)
+  -- tile.insert(9, c.pieces.two)
+  tile.insert(13, c.pieces.two)
+  -- tile.insert(16, c.pieces.two)
+
   board.renderAllTiles()
   print('============================================================')
-end
-
-function _G.foo()
-  board.drawEmptyBoard()
 end
 
 _G.remove = function(nr)
@@ -48,6 +52,11 @@ _G.add = function(nr, p)
 
   tile.insert(nr, pi)
   board.renderAllTiles()
+end
+
+function _G.tile(nr)
+  local tiles = state.tiles
+  P(tiles[nr])
 end
 
 return M

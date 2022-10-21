@@ -9,7 +9,7 @@ local ui = {
     sixtyFour = '',
   },
   chars = {
-    pieceEmpty = '    x       ',
+    pieceEmpty = '            ',
     pieceText = '████████████',
     pieceChar = '█',
     borderRow = '━━━━━━━━━━━━╋━━━━━━━━━━━━╋━━━━━━━━━━━━╋━━━━━━━━━━━━',

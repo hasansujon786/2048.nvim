@@ -112,40 +112,37 @@ function M.renderAllTiles()
   end
 end
 
-local function getCurPath(paths, nr)
+local function getCurPath(paths, curTileNr)
   for index, p_nr in ipairs(paths) do
-    if nr == p_nr then
-      return utils.slice(paths, index + 1, 4)
+    if curTileNr == p_nr then
+      return utils.reverseTable(utils.slice(paths, 1, index - 1))
     end
   end
 end
 
 function M.slideTiles(direction)
   local tiles = state.tiles
-  local paths = c.tileDirectionalPath[direction]
-  local moves = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+  local paths3d = c.tileDirectionalPath[direction]
 
-  for i = 1, #paths do
-    local curPath = paths[i]
-    for j = 1, #curPath do
-      local curTileIdx = curPath[j]
+  for i = 1, #paths3d do
+    local paths2d = paths3d[i]
+    for j = 1, #paths2d do
+      local curTileIdx = paths2d[j]
       local curTile = tiles[curTileIdx]
+
       if curTile.hasPiece then
-        -- P(curIndex, curTile)
-        -- P(curPath)
-        local availablePaths = getCurPath(curPath, curTileIdx)
+        local availablePaths = getCurPath(paths2d, curTileIdx)
         local nextTileIdx = tile.getNextAvailableTile(availablePaths, curTileIdx)
-        moves[curTileIdx] = nextTileIdx
+
+        if nextTileIdx > 0 then
+          P(curTileIdx, nextTileIdx)
+          tile.moveFrom(curTileIdx, nextTileIdx)
+        end
       end
     end
   end
 
-  -- Update tile according to available moves
-  for from, to in ipairs(moves) do
-    if to > 0 then
-      tile.moveFrom(from, to)
-    end
-  end
+  -- Update tiles
   M.renderAllTiles()
 end
 
