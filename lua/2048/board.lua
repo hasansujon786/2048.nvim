@@ -8,6 +8,7 @@ local NuiText = require('nui.text')
 local utils = require('2048.utils')
 local c = require('2048.constant')
 
+local filter = vim.tbl_filter
 local boardWidth, boardHeight = 51, 23
 
 M = {}
@@ -112,7 +113,7 @@ function M.renderAllTiles()
   end
 end
 
-local function getCurPath(paths, curTileNr)
+local function nextAllPaths(paths, curTileNr)
   for index, p_nr in ipairs(paths) do
     if curTileNr == p_nr then
       return utils.reverseTable(utils.slice(paths, 1, index - 1))
@@ -120,22 +121,34 @@ local function getCurPath(paths, curTileNr)
   end
 end
 
+local function getCurPath(paths, curTileNr, usedPath)
+  local nextPaths = nextAllPaths(paths, curTileNr)
+
+  return filter(function(item)
+    return not vim.tbl_contains(usedPath, item)
+  end, nextPaths)
+end
+
 function M.slideTiles(direction)
   local tiles = state.tiles
-  local paths3d = c.tileDirectionalPath[direction]
+  local paths2d = c.tileDirectionalPath[direction]
 
-  for i = 1, #paths3d do
-    local paths2d = paths3d[i]
-    for j = 1, #paths2d do
-      local curTileIdx = paths2d[j]
+  for i = 1, #paths2d do
+    local usedPaths1d = {}
+    local paths1d = paths2d[i]
+
+    for j = 1, #paths1d do
+      local curTileIdx = paths1d[j]
       local curTile = tiles[curTileIdx]
 
       if curTile.hasPiece then
-        local availablePaths = getCurPath(paths2d, curTileIdx)
-        local nextTileIdx = tile.getNextAvailableTile(availablePaths, curTileIdx)
+        local availablePaths = getCurPath(paths1d, curTileIdx, usedPaths1d)
+        local nextTileIdx, usedTileIdx = tile.getNextAvailableTile(availablePaths, curTileIdx, paths1d[j - 1])
 
         if nextTileIdx > 0 then
-          P(curTileIdx, nextTileIdx)
+          if usedTileIdx then
+            table.insert(usedPaths1d, nextTileIdx)
+          end
           tile.moveFrom(curTileIdx, nextTileIdx)
         end
       end

@@ -1,5 +1,6 @@
 local ui = require('2048.ui')
 local state = require('2048.state')
+local c = require('2048.constant')
 local M = {}
 
 function M.insert(to_nr, piece)
@@ -16,29 +17,45 @@ end
 
 function M.moveFrom(from_nr, to_nr)
   local tiles = state.tiles
-  if not tiles[from_nr].hasPiece then
+  local fromTile, toTile = tiles[from_nr], tiles[to_nr]
+  if not fromTile.hasPiece then
     P('no tile from_nr', from_nr)
     return
   end
-
-  tiles[to_nr].hasPiece = true
-  tiles[to_nr].piece = tiles[from_nr].piece
+  -- If both the tiles are same then marge the pieces & increase the number
+  if fromTile.hasPiece and toTile.hasPiece and fromTile.piece.nr == toTile.piece.nr then
+    local tileValue = fromTile.piece.nr * 2
+    tiles[to_nr].hasPiece = true
+    tiles[to_nr].piece = c.pieces[tileValue]
+  else
+    tiles[to_nr].hasPiece = true
+    tiles[to_nr].piece = tiles[from_nr].piece
+  end
 
   tiles[from_nr].hasPiece = false
   tiles[from_nr].piece = nil
 end
 
-function M.getNextAvailableTile(curPath, curIndex)
+function M.getNextAvailableTile(availablePaths, curIndex)
   local tiles = state.tiles
   local finalNextIndex = 0
 
-  for _, nextIndex in ipairs(curPath) do
+  for _, nextIndex in ipairs(availablePaths) do
     local nextTile = tiles[nextIndex]
-    if curIndex ~= nextIndex then
-      if nextTile.hasPiece then
-      else
-        -- P(curPath, curIndex, nextIndex)
-        finalNextIndex = nextIndex
+    local curTile = tiles[curIndex]
+
+    -- If the next tile is empty then save the position & check for it's nextTile
+    if not nextTile.hasPiece then
+      finalNextIndex = nextIndex
+    elseif nextTile.hasPiece then
+      -- If nextTile has a piece & it is different than curTile
+      -- then return with the prev pos index.
+      if nextTile.piece.nr ~= curTile.piece.nr then
+        return finalNextIndex
+      elseif nextTile.piece.nr == curTile.piece.nr then
+        -- If nextTile & curTile's piece is same
+        -- then return with nextIndex & mark the tile as used.
+        return nextIndex, nextIndex
       end
     end
   end

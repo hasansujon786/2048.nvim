@@ -1,9 +1,7 @@
-local NuiText = require('nui.text')
 local board = require('2048.board')
 local ui = require('2048.ui')
 local state = require('2048.state')
 local tile = require('2048.tile')
-local utils = require('2048.utils')
 local c = require('2048.constant')
 local M = {}
 
@@ -16,17 +14,18 @@ function M.startGame()
   local active_board = board.setupBoard()
   board.drawEmptyBoard()
 
-  -- tile.insert(c.tileDirectionalPath.up[1][1], c.pieces.two)
-  -- tile.insert(c.tileDirectionalPath.left[1][4], c.pieces.two)
+  tile.insert(c.tileDirectionalPath.up[1][1], c.pieces[2])
+  tile.insert(c.tileDirectionalPath.left[1][4], c.pieces[2])
 
-  -- tile.insert(9, c.pieces.two)
-  tile.insert(1, c.pieces.two)
-  tile.insert(3, c.pieces.four)
-  tile.insert(16, c.pieces.four)
-  tile.insert(5, c.pieces.four)
-  -- tile.insert(9, c.pieces.two)
-  tile.insert(13, c.pieces.two)
-  -- tile.insert(16, c.pieces.two)
+  -- tile.insert(1, c.pieces[4])
+  tile.insert(1, c.pieces[2])
+  tile.insert(5, c.pieces[2])
+  tile.insert(9, c.pieces[2])
+  -- tile.insert(13, c.pieces[2])
+  -- tile.insert(5, c.pieces[4])
+  -- tile.insert(3, c.pieces[4])
+  -- tile.insert(16, c.pieces[4])
+  -- tile.insert(16, c.pieces[4])
 
   board.renderAllTiles()
   print('============================================================')
@@ -45,9 +44,9 @@ end
 _G.add = function(nr, p)
   local pi = nil
   if p == 4 then
-    pi = c.pieces.four
+    pi = c.pieces[4]
   elseif p == 2 then
-    pi = c.pieces.two
+    pi = c.pieces[2]
   end
 
   tile.insert(nr, pi)

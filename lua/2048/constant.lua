@@ -40,12 +40,48 @@ M.direction = {
 }
 
 M.pieces = {
-  two = {
+  [2] = {
     nr = 2,
     hl = 'String',
   },
-  four = {
+  [4] = {
     nr = 4,
+    hl = '@constant',
+  },
+  [8] = {
+    nr = 8,
+    hl = '@define',
+  },
+  [16] = {
+    nr = 16,
+    hl = 'DiffRemoved',
+  },
+  [32] = {
+    nr = 32,
+    hl = '@symbol',
+  },
+  [64] = {
+    nr = 64,
+    hl = '@constant',
+  },
+  [128] = {
+    nr = 128,
+    hl = '@constant',
+  },
+  [256] = {
+    nr = 256,
+    hl = '@constant',
+  },
+  [512] = {
+    nr = 512,
+    hl = '@constant',
+  },
+  [1024] = {
+    nr = 1024,
+    hl = '@constant',
+  },
+  [2048] = {
+    nr = 1024,
     hl = '@constant',
   },
 }
