@@ -1,5 +1,6 @@
 local ui = require('2048.ui')
 local state = require('2048.state')
+local dashboard = require('2048.ui.dashboard')
 local c = require('2048.constant')
 local M = {}
 
@@ -27,6 +28,7 @@ function M.moveFrom(from_nr, to_nr)
     local tileValue = fromTile.piece.nr * 2
     tiles[to_nr].hasPiece = true
     tiles[to_nr].piece = c.pieces[tileValue]
+    dashboard.increaseScore(tileValue)
   else
     tiles[to_nr].hasPiece = true
     tiles[to_nr].piece = tiles[from_nr].piece

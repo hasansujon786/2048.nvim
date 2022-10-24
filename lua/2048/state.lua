@@ -81,9 +81,19 @@ local tiles = {
     row = tile_rows[4],
   },
 }
+local score = 0
 
-return {
+local M = {
+  useScore = function()
+    return function()
+      return score
+    end, function(fn)
+      score = fn(score)
+    end
+  end,
   tiles = tiles,
   bufnr = 0,
   ns_id = -1,
 }
+
+return M

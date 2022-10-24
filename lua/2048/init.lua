@@ -1,5 +1,5 @@
+local dashboard = require('2048.ui.dashboard')
 local board = require('2048.board')
-local ui = require('2048.ui')
 local state = require('2048.state')
 local tile = require('2048.tile')
 local c = require('2048.constant')
@@ -13,6 +13,7 @@ local M = {}
 function M.startGame()
   local active_board = board.setupBoard()
   board.drawEmptyBoard()
+  dashboard.setup()
 
   tile.insert(c.tileDirectionalPath.up[1][1], c.pieces[2])
   tile.insert(c.tileDirectionalPath.left[1][4], c.pieces[2])

@@ -7,11 +7,12 @@ local tile = require('2048.tile')
 local NuiText = require('nui.text')
 local utils = require('2048.utils')
 local c = require('2048.constant')
+local dashboard = require('2048.ui.dashboard')
 
 local filter = vim.tbl_filter
 local boardWidth, boardHeight = 51, 23
 
-M = {}
+local M = {}
 
 function M.setupBoard()
   local popup = Popup({
@@ -54,8 +55,13 @@ function M.setupBoard()
 
   popup:on(event.BufLeave, function()
     popup:unmount()
+    M.minimize()
   end)
   return popup
+end
+
+function M.minimize()
+  dashboard.hide()
 end
 
 local function renderEmptyLines(line)
@@ -143,7 +149,7 @@ function M.slideTiles(direction)
 
       if curTile.hasPiece then
         local availablePaths = getCurPath(paths1d, curTileIdx, usedPaths1d)
-        local nextTileIdx, usedTileIdx = tile.getNextAvailableTile(availablePaths, curTileIdx, paths1d[j - 1])
+        local nextTileIdx, usedTileIdx = tile.getNextAvailableTile(availablePaths, curTileIdx)
 
         if nextTileIdx > 0 then
           if usedTileIdx then
