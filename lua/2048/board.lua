@@ -162,6 +162,13 @@ function M.slideTiles(direction)
   end
 
   -- Update tiles
+
+  local emptyTiles = tile.getEmptyTiles()
+  if #emptyTiles == 0 then
+    P('no turn')
+    return
+  end
+  tile.insertRandomTile(emptyTiles)
   M.renderAllTiles()
 end
 

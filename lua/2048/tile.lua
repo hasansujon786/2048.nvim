@@ -65,6 +65,21 @@ function M.getNextAvailableTile(availablePaths, curIndex)
   return finalNextIndex
 end
 
+function M.getEmptyTiles()
+  local tiles = state.tiles
+  return vim.tbl_filter(function(tile)
+    if tile.piece and tile.piece.nr > 0 then
+      return false
+    end
+    return true
+  end, tiles)
+end
+
+function M.insertRandomTile(emptyTiles)
+  local nr = math.random(1, #emptyTiles)
+  M.insert(emptyTiles[nr].pos, c.pieces[nr % 2 > 0 and 2 or 4])
+end
+
 function M.generateTileText(text)
   local pad_char = ui.chars.pieceChar
   local formatter = '%s%s%s'

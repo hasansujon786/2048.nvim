@@ -11,12 +11,12 @@ local M = {}
 -- 13 14 15 16
 
 function M.startGame()
-  local active_board = board.setupBoard()
+  board.setupBoard()
   board.drawEmptyBoard()
   dashboard.setup()
 
   tile.insert(c.tileDirectionalPath.up[1][1], c.pieces[2])
-  tile.insert(c.tileDirectionalPath.left[1][4], c.pieces[2])
+  -- tile.insert(c.tileDirectionalPath.left[1][4], c.pieces[2])
 
   -- tile.insert(1, c.pieces[4])
   tile.insert(1, c.pieces[2])
