@@ -8,6 +8,7 @@ local NuiText = require('nui.text')
 local utils = require('2048.utils')
 local c = require('2048.constant')
 local dashboard = require('2048.ui.dashboard')
+local alert = require('2048.ui.alert')
 
 local filter = vim.tbl_filter
 local boardWidth, boardHeight = 51, 23
@@ -62,6 +63,7 @@ end
 
 function M.minimize()
   dashboard.hide()
+  alert.hide()
 end
 
 local function renderEmptyLines(line)
@@ -138,6 +140,7 @@ end
 function M.slideTiles(direction)
   local tiles = state.tiles
   local paths2d = c.tileDirectionalPath[direction]
+  local anyTiledMoved = false
 
   for i = 1, #paths2d do
     local usedPaths1d = {}
@@ -152,8 +155,9 @@ function M.slideTiles(direction)
         local nextTileIdx, usedTileIdx = tile.getNextAvailableTile(availablePaths, curTileIdx)
 
         if nextTileIdx > 0 then
+          anyTiledMoved = true
           if usedTileIdx then
-            table.insert(usedPaths1d, nextTileIdx)
+            table.insert(usedPaths1d, nextTileIdx) -- store used tiles position
           end
           tile.moveFrom(curTileIdx, nextTileIdx)
         end
@@ -161,14 +165,24 @@ function M.slideTiles(direction)
     end
   end
 
-  -- Update tiles
+  local emptyTilesList = tile.getEmptyTiles()
+  local isEmptyTilesAvalable = #emptyTilesList ~= 0
 
-  local emptyTiles = tile.getEmptyTiles()
-  if #emptyTiles == 0 then
-    P('no turn')
+  if not anyTiledMoved and not isEmptyTilesAvalable then
+    alert.notify('Game Over')
     return
   end
-  tile.insertRandomTile(emptyTiles)
+  if not anyTiledMoved then
+    alert.notify('xxxxxxxxxx')
+    return
+  end
+  if not isEmptyTilesAvalable then
+    alert.notify('No empty Tiles left')
+    return
+  end
+
+  -- Updatef tiles
+  tile.insertRandomTile(emptyTilesList)
   M.renderAllTiles()
 end
 

@@ -3,6 +3,7 @@ local board = require('2048.board')
 local state = require('2048.state')
 local tile = require('2048.tile')
 local c = require('2048.constant')
+local alert = require('2048.ui.alert')
 local M = {}
 
 --  1  2  3  4
@@ -14,6 +15,7 @@ function M.startGame()
   board.setupBoard()
   board.drawEmptyBoard()
   dashboard.setup()
+  alert.setup()
 
   tile.insert(c.tileDirectionalPath.up[1][1], c.pieces[2])
   -- tile.insert(c.tileDirectionalPath.left[1][4], c.pieces[2])
